@@ -1,0 +1,70 @@
+name: Autograding Tests
+'on':
+- workflow_dispatch
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: lab4a
+      id: lab4a
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: lab4a
+        setup-command: ''
+        command: python3 ./CheckLab4.py -f -v lab4a
+        timeout: 10
+        max-score: 1
+    - name: Lab4b
+      id: lab4b
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Lab4b
+        setup-command: ''
+        command: python3 ./CheckLab4.py -f -v lab4b
+        timeout: 10
+        max-score: 1
+    - name: Lab4c
+      id: lab4c
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Lab4c
+        setup-command: ''
+        command: python3 ./CheckLab4.py -f -v lab4c
+        timeout: 10
+        max-score: 1
+    - name: Lab4d
+      id: lab4d
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Lab4d
+        setup-command: ''
+        command: python3 ./CheckLab4.py -f -v lab4d
+        timeout: 10
+        max-score: 1
+    - name: Lab4e
+      id: lab4e
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Lab4e
+        setup-command: ''
+        command: python3 ./CheckLab4.py -f -v lab4e
+        timeout: 10
+        max-score: 1
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        LAB4A_RESULTS: "${{steps.lab4a.outputs.result}}"
+        LAB4B_RESULTS: "${{steps.lab4b.outputs.result}}"
+        LAB4C_RESULTS: "${{steps.lab4c.outputs.result}}"
+        LAB4D_RESULTS: "${{steps.lab4d.outputs.result}}"
+        LAB4E_RESULTS: "${{steps.lab4e.outputs.result}}"
+      with:
+        runners: lab4a,lab4b,lab4c,lab4d,lab4e
